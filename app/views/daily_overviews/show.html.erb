@@ -1,0 +1,18 @@
+<h1 class="text-3xl font-bold mb-4">Daily Overview (<%= @date.strftime('%B %d, %Y') %>)</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div>
+    <h2 class="text-xl font-bold mb-2">To-do List</h2>
+    <%= render "todo_list" %>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-bold mb-2">Habit Tracker</h2>
+    <%= render "habit_tracker" %>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-bold mb-2">Notes</h2>
+    <%= render "notes" %>
+  </div>
+</div>

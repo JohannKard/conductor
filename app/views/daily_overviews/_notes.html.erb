@@ -1,0 +1,16 @@
+<div>
+  <%= form_with(model: Note.new, url: notes_path, method: :post, local: true) do |form| %>
+    <%= form.text_area :content, placeholder: "Enter your note here...", class: "w-full border border-gray-300 rounded-md p-2 mb-2" %>
+    <%= form.hidden_field :date, value: @date %>
+    <%= form.submit "Add Note", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  <% end %>
+
+  <ul class="mt-4">
+    <% @notes.each do |note| %>
+      <li class="border border-gray-300 rounded-md p-2 mb-2 flex justify-between items-center">
+        <%= note.content %>
+        <%= button_to "Delete", note_path(note), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" %>
+      </li>
+    <% end %>
+  </ul>
+</div>
