@@ -1,0 +1,7 @@
+<h1 class="text-3xl font-bold mb-4">Notes History</h1>
+
+<ul class="list-disc pl-4">
+  <% @dates.each do |date| %>
+    <li><%= link_to date.strftime('%B %d, %Y'), notes_history_path(date) %></li>
+  <% end %>
+</ul>

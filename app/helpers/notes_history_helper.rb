@@ -1,0 +1,2 @@
+module NotesHistoryHelper
+end

@@ -1,0 +1,41 @@
+<h1 class="text-3xl font-bold mb-4">Habit Tracker</h1>
+
+<div class="mb-4">
+  <% @weeks.each do |week| %>
+    <%= link_to "#{week.start_date.strftime('%B %d')} - #{week.end_date.strftime('%B %d, %Y')}", weeks_path(week), class: "mr-2 #{week == @week ? 'font-bold' : ''}" %>
+  <% end %>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <h2 class="text-xl font-bold mb-2">Habits for the Week</h2>
+    <ul class="list-disc pl-4">
+      <% @habits.each do |habit| %>
+        <li class="flex items-center mb-2">
+          <%= form_with(model: habit, url: habit_path(habit), method: :put, local: true) do |form| %>
+            <%= form.check_box :completed, checked: habit.completed_for_date?(Date.today), class: "mr-2" %>
+            <%= form.text_field :name, disabled: true, class: "w-full border border-gray-300 rounded-md p-2" %>
+            <%= form.submit "Update", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2" %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-bold mb-2">Manage Habits</h2>
+    <%= form_with(model: Habit.new, url: habits_path, method: :post, local: true) do |form| %>
+      <%= form.text_field :name, placeholder: "Enter a new habit...", class: "w-full border border-gray-300 rounded-md p-2 mb-2" %>
+      <%= form.submit "Add Habit", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+    <% end %>
+
+    <ul class="list-disc pl-4 mt-4">
+      <% @habits.each do |habit| %>
+        <li class="flex items-center mb-2">
+          <%= habit.name %>
+          <%= button_to "Delete", habit_path(habit), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

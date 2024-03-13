@@ -6,4 +6,5 @@ class User < ApplicationRecord
   has_many :todos, dependent: :destroy
   has_many :habits, dependent: :destroy
   has_many :notes, dependent: :destroy
+  has_many :weeks, dependent: :destroy
 end
