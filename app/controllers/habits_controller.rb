@@ -19,9 +19,6 @@ class HabitsController < ApplicationController
     def update
       @week = current_user.weeks.find_or_create_by(start_date: Date.today.beginning_of_week, end_date: Date.today.end_of_week)
       if @habit.update(habit_params)
-        (@week.start_date..@week.end_date).each do |date|
-          @habit.habit_completions.update(date: date)
-        end
         redirect_to daily_overview_path, notice: 'Habit was successfully updated.'
       else
         redirect_to daily_overview_path, alert: 'Failed to update habit.'
