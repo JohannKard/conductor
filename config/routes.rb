@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :daily_overviews, only: [:show]
   resources :todos, only: [:create, :update, :destroy]
   resources :habits, only: [:create, :update, :destroy]
+  resources :habit_completions, only: [:update]
   resources :notes, only: [:create, :destroy]
   resources :weeks, only: [:index, :create, :update, :destroy]
   resources :notes_history, only: [:index, :show]
