@@ -1,7 +1,13 @@
-<h1 class="text-3xl font-bold mb-4">Notes History</h1>
+<div class="flex flex-col w-full p-4">
+  <h1 class="text-3xl font-bold">Notes History</h1>
 
-<ul class="list-disc pl-4">
-  <% @dates.each do |date| %>
-    <li><%= link_to date.strftime('%B %d, %Y'), notes_history_path(date) %></li>
-  <% end %>
-</ul>
+  <ul class="list-none py-6">
+    <% @dates.each do |date| %>
+      <li><%= link_to date.strftime('%B %d, %Y'), notes_history_path(date) %></li>
+    <% end %>
+  </ul>
+
+  <div>
+    <%= link_to "Back to Daily Overview", daily_overview_path(id: Date.today), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  </div>
+</div>

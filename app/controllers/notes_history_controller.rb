@@ -6,7 +6,7 @@ class NotesHistoryController < ApplicationController
     end
   
     def show
-      @date = Date.parse(params[:id])
+      @date = params[:id] ? Date.parse(params[:id]) : Date.today
       @notes = current_user.notes.where(date: @date).order(created_at: :asc)
     end
   end
