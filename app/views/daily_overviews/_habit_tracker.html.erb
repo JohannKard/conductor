@@ -1,4 +1,4 @@
-<ul class="list-disc pl-4">
+<ul class="list-none">
   <% @habits.each do |habit| %>
     <li class="flex items-center mb-2">
       <% if !habit.habit_completions.completed.exists?(date: @date) %>
@@ -10,7 +10,10 @@
           <i class="fa-solid fa-square-check text-xl text-green-500"></i>
         <%end%>
       <% end %>
-      <%= habit.name %>
+      <span class="mx-3">
+        <%= habit.name %>
+      </span>
     </li>
   <% end %>
 </ul>
+<%= link_to "Habit Manager", weeks_path(date: @date), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>

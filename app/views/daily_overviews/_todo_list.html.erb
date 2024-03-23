@@ -9,7 +9,7 @@
 
     <li class="flex flex-row items-center mb-2">
 
-    <!-- I know there's form checkboxs, but I wanted to play with other ways of updating data and showing icons -->
+    <!-- I know there's form checkboxes, but I wanted to play with other ways of updating data and showing icons -->
 
     <% if !todo.completed %>
       <%= button_to todo_path(todo), params: {:todo => { :completed => true }}, method: :put do %>

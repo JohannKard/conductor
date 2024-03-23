@@ -5,7 +5,7 @@ class WeeksController < ApplicationController
     def index
       @weeks = current_user.weeks.order(start_date: :desc)
       @date = params[:date] ? Date.parse(params[:date]) : Date.today
-      @week = @weeks.first || current_user.weeks.create(start_date: @date.beginning_of_week, end_date: @date.end_of_week)
+      @week = @weeks.find_or_create_by(start_date: @date.beginning_of_week, end_date: @date.end_of_week)
       @habits = @week.habits
     end
   
@@ -34,7 +34,7 @@ class WeeksController < ApplicationController
     private
   
     def set_week
-      @week = current_user.weeks.find(params[:id])
+      @week = current_user.weeks.find_or_create_by(start_date: @date.beginning_of_week, end_date: @date.end_of_week)
       @date = params[:date] ? Date.parse(params[:date]) : Date.today
     end
   

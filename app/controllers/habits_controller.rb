@@ -11,9 +11,9 @@ class HabitsController < ApplicationController
         (@week.start_date..@week.end_date).each do |date|
           @habit.habit_completions.create(date: date)
         end
-        redirect_to weeks_path, notice: 'Habit was successfully created.'
+        redirect_to weeks_path(date: @date), notice: 'Habit was successfully created.'
       else
-        redirect_to weeks_path, alert: 'Failed to create habit.'
+        redirect_to weeks_path(date: @date), alert: 'Failed to create habit.'
       end
     end
   
@@ -28,7 +28,7 @@ class HabitsController < ApplicationController
   
     def destroy
       @habit.destroy
-      redirect_to weeks_path, notice: 'Habit was successfully deleted.'
+      redirect_to weeks_path(date: @date), notice: 'Habit was successfully deleted.'
     end
   
     private

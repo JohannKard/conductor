@@ -1,30 +1,51 @@
-<h1 class="text-3xl font-bold mb-4">Habit Tracker</h1>
+<div class="flex flex-col w-full h-full p-4">
+  <h1 class="text-3xl font-bold">Habit Tracker</h1>
 
-<div class="flex flex-row gap-4 p-4">
-  <%= link_to "Back to Daily View", daily_overview_path(id: @date), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-</div>
+  <div class="flex flex-row my-6">
+    <%= link_to "Back to Daily View", daily_overview_path(id: @date), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  </div>
 
-<div class="mb-4">
-  <% @weeks.each do |week| %>
-    <%= link_to "#{week.start_date.strftime('%B %d')} - #{week.end_date.strftime('%B %d, %Y')}", weeks_path(week), class: "mr-2 #{week == @week ? 'font-bold' : ''}" %>
-  <% end %>
-</div>
+  <div class="flex flex-row w-full">
+    <div class="flex flex-col w-full">
+      <h2 class="text-xl font-bold">Habits History</h2>
+      <div class="flex flex-col w-full">
+        <% @weeks.each do |week| %>
+          <h3 class="text-lg mt-2"><%= link_to "#{week.start_date.strftime('%B %d')} - #{week.end_date.strftime('%B %d, %Y')}", weeks_path(date: week.start_date), class: "mr-2 #{week == @week ? 'font-bold' : ''}" %></h3>
+          <% if week == @week %>
+            <div class="flex flex-col w-full">
+              <% week.habits.each do |habit| %>
+                <p class=""><%= habit.name %>:</p>
+                <div class="flex flex-wrap gap-1">
+                  <% habit.habit_completions.each do |completion| %>
+                    <i class="<%= completion.completed ? 'fa-solid text-green-500' : 'fa-regular text-red-500' %> fa-square-full"></i>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-  <div>
-    <h2 class="text-xl font-bold mb-2">Manage Habits</h2>
-    <%= form_with(model: Habit.new, url: habits_path, method: :post, local: true) do |form| %>
-      <%= form.text_field :name, placeholder: "Enter a new habit...", class: "w-full border border-gray-300 rounded-md p-2 mb-2" %>
-      <%= form.submit "Add Habit", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-    <% end %>
 
-    <ul class="list-disc pl-4 mt-4">
-      <% @habits.each do |habit| %>
-        <li class="flex items-center mb-2">
-          <%= habit.name %>
-          <%= button_to "Delete", habit_path(habit), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2" %>
-        </li>
-      <% end %>
-    </ul>
+    <div class="flex flex-col w-full">
+      <div>
+        <h2 class="text-xl font-bold mb-2">Manage Habits</h2>
+        <%= form_with(model: Habit.new, url: habits_path, method: :post, local: true) do |form| %>
+          <%= form.text_field :name, placeholder: "Enter a new habit...", class: "w-full border border-gray-300 rounded-md p-2 mb-2" %>
+          <%= hidden_field_tag(:date, @date) %>
+          <%= form.submit "Add Habit", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+        <% end %>
+
+        <ul class="list-none mt-4">
+          <% @habits.each do |habit| %>
+            <li class="flex items-center mb-2">
+              <%= habit.name %>
+              <%= button_to "Delete", habit_path(habit, date: @date), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
