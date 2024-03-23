@@ -1,18 +1,31 @@
-<%= form_with(model: Todo.new, url: todos_path, method: :post, local: true) do |form| %>
-  <%= form.text_field :name, placeholder: "Enter a new todo...", class: "w-full border border-gray-300 rounded-md p-2 mb-2" %>
+<%= form_with(model: Todo.new, url: todos_path, method: :post, local: true, class:"flex flex-row gap-2 mb-3") do |form| %>
+  <%= form.text_field :name, placeholder: "Enter a new todo...", class: "w-full border border-gray-300 rounded-md p-2" %>
   <%= form.hidden_field :due_date, value: @date %>
-  <%= form.submit "Add Todo", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  <%= form.submit "Add", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
 <% end %>
 
-<ul class="list-disc pl-4">
+<ul class="list-none">
   <% @todos.each do |todo| %>
-    <li class="flex items-center mb-2">
-      <%= form_with(model: todo, url: todo_path(todo), method: :put, local: true) do |form| %>
-        <%= form.check_box :completed, class: "mr-2" %>
-        <%= form.text_field :name, class: "w-full border border-gray-300 rounded-md p-2 mr-2 #{todo.completed? ? 'line-through' : ''}" %>
-        <%= form.submit "Update", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" %>
-      <% end %>
-      <%= button_to "Delete", todo_path(todo), method: :delete, class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" %>
+
+    <li class="flex flex-row items-center mb-2">
+
+    <!-- I know there's form checkboxs, but I wanted to play with other ways of updating data and showing icons -->
+
+    <% if !todo.completed %>
+      <%= button_to todo_path(todo), params: {:todo => { :completed => true }}, method: :put do %>
+        <i class="fa-classic fa-square text-xl"></i>
+      <%end%>
+    <% else %>
+      <%= button_to todo_path(todo), params: {:todo => { :completed => false }}, method: :put do %>
+        <i class="fa-solid fa-square-check text-xl text-green-500"></i>
+      <%end%>
+    <% end %>
+    <span class="<%= todo.completed ? 'line-through' : '' %> text-xl flex mx-3">
+      <%= todo.name %>
+    </span>
+    <%= button_to todo_path(todo), method: :delete do %>
+      <i class="fa-solid fa-trash text-red-500"></i>
+    <%end%>
     </li>
   <% end %>
 </ul>
