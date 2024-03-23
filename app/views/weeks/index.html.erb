@@ -1,5 +1,9 @@
 <h1 class="text-3xl font-bold mb-4">Habit Tracker</h1>
 
+<div class="flex flex-row gap-4 p-4">
+  <%= link_to "Back to Daily View", daily_overview_path(id: @date), class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+</div>
+
 <div class="mb-4">
   <% @weeks.each do |week| %>
     <%= link_to "#{week.start_date.strftime('%B %d')} - #{week.end_date.strftime('%B %d, %Y')}", weeks_path(week), class: "mr-2 #{week == @week ? 'font-bold' : ''}" %>

@@ -4,36 +4,38 @@ class WeeksController < ApplicationController
   
     def index
       @weeks = current_user.weeks.order(start_date: :desc)
-      @week = @weeks.first || current_user.weeks.create(start_date: Date.today.beginning_of_week, end_date: Date.today.end_of_week)
+      @date = params[:date] ? Date.parse(params[:date]) : Date.today
+      @week = @weeks.first || current_user.weeks.create(start_date: @date.beginning_of_week, end_date: @date.end_of_week)
       @habits = @week.habits
     end
   
     def create
       @week = current_user.weeks.build(week_params)
       if @week.save
-        redirect_to weeks_path, notice: 'Week was successfully created.'
+        redirect_to weeks_path(date: @date), notice: 'Week was successfully created.'
       else
-        redirect_to weeks_path, alert: 'Failed to create week.'
+        redirect_to weeks_path(date: @date), alert: 'Failed to create week.'
       end
     end
   
     def update
       if @week.update(week_params)
-        redirect_to weeks_path, notice: 'Week was successfully updated.'
+        redirect_to weeks_path(date: @date), notice: 'Week was successfully updated.'
       else
-        redirect_to weeks_path, alert: 'Failed to update week.'
+        redirect_to weeks_path(date: @date), alert: 'Failed to update week.'
       end
     end
   
     def destroy
       @week.destroy
-      redirect_to weeks_path, notice: 'Week was successfully deleted.'
+      redirect_to weeks_path(date: @date), notice: 'Week was successfully deleted.'
     end
   
     private
   
     def set_week
       @week = current_user.weeks.find(params[:id])
+      @date = params[:date] ? Date.parse(params[:date]) : Date.today
     end
   
     def week_params

@@ -1,10 +1,16 @@
 <ul class="list-disc pl-4">
   <% @habits.each do |habit| %>
     <li class="flex items-center mb-2">
-      <%= form_with(model: habit.habit_completions.find_or_initialize_by(date: @date), url: habit_completion_path(habit), method: :patch, local: true) do |form| %>
-        <%= form.check_box :completed, checked: habit.habit_completions.completed.exists?(date: @date), onchange: 'this.form.submit();' %>
-        <%= form.label habit.name %>
+      <% if !habit.habit_completions.completed.exists?(date: @date) %>
+        <%= button_to habit_completion_path(habit), params: {:habit_completion => { :completed => 1 }, date: @date}, method: :patch, local: true do %>
+          <i class="fa-classic fa-square text-xl"></i>
+        <%end%>
+      <% else %>
+        <%= button_to habit_completion_path(habit), params: {:habit_completion => { :completed => 0 }, date: @date}, method: :patch, local: true do %>
+          <i class="fa-solid fa-square-check text-xl text-green-500"></i>
+        <%end%>
       <% end %>
+      <%= habit.name %>
     </li>
   <% end %>
 </ul>

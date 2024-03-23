@@ -3,7 +3,8 @@ class HabitsController < ApplicationController
     before_action :set_habit, only: [:update, :destroy]
 
     def create
-      @week = current_user.weeks.find_or_create_by(start_date: Date.today.beginning_of_week, end_date: Date.today.end_of_week)
+      @date = params[:date] ? Date.parse(params[:date]) : Date.today
+      @week = current_user.weeks.find_or_create_by(start_date: @date.beginning_of_week, end_date: @date.end_of_week)
       @habit = @week.habits.build(habit_params)
       @habit.user = current_user
       if @habit.save
@@ -17,11 +18,11 @@ class HabitsController < ApplicationController
     end
   
     def update
-      @week = current_user.weeks.find_or_create_by(start_date: Date.today.beginning_of_week, end_date: Date.today.end_of_week)
+      @week = current_user.weeks.find_or_create_by(start_date: @date.beginning_of_week, end_date: @date.end_of_week)
       if @habit.update(habit_params)
-        redirect_to daily_overview_path, notice: 'Habit was successfully updated.'
+        redirect_to daily_overview_path(id: @date), notice: 'Habit was successfully updated.'
       else
-        redirect_to daily_overview_path, alert: 'Failed to update habit.'
+        redirect_to daily_overview_path(id: @date), alert: 'Failed to update habit.'
       end
     end
   
@@ -34,6 +35,7 @@ class HabitsController < ApplicationController
   
     def set_habit
       @habit = current_user.habits.find(params[:id])
+      @date = params[:date] ? Date.parse(params[:date]) : Date.today
     end
   
     def habit_params
