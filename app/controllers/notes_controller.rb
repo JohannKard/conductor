@@ -4,16 +4,18 @@ class NotesController < ApplicationController
   
     def create
       @note = current_user.notes.build(note_params)
+      @date = params[:date] ? Date.parse(params[:date]) : Date.today
       if @note.save
-        redirect_to root_path, notice: 'Note was successfully created.'
+        redirect_to daily_overview_path(id: @date), notice: 'Note was successfully created.'
       else
-        redirect_to root_path, alert: 'Failed to create note.'
+        redirect_to daily_overview_path(id: @date), alert: 'Failed to create note.'
       end
     end
   
     def destroy
       @note.destroy
-      redirect_to daily_overview_path, notice: 'Note was successfully deleted.'
+      @date = params[:date] ? Date.parse(params[:date]) : Date.today
+      redirect_to daily_overview_path(id: @date), notice: 'Note was successfully deleted.'
     end
   
     private
